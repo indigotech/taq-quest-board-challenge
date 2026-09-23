@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap");
+
+@import "tailwindcss";
+@import "tailwindcss-animated";
+
+@import "./_constants.css" layer(base);
+@import "./_preflight.css" layer(base);
+
+@import "./_color.css" layer(theme);
+@import "./_font.css" layer(theme);
+@import "./_spacing.css" layer(utilities);
+@import "./_radius.css" layer(utilities);
+@import "./_animation.css" layer(utilities);
+@import "./_darkmode.css" layer(utilities);
+@import "./_background-image.css";
+
+@custom-variant dark (&:where(.dark, .dark *));

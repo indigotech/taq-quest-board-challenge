@@ -10,5 +10,25 @@
   "endOfLine": "lf",
   "sortImports": { "newlinesBetween": false },
   "sortPackageJson": false,
-  "ignorePatterns": ["*", "!*/", "!**/*.ts"]
+  "ignorePatterns": [
+    "*",
+    "!*/",
+    "!**/*.ts",
+    "!**/*.tsx",
+    "apps/web/src/atomic/**",
+    "apps/web/.storybook/**",
+    "!apps/web/src/atomic/obj.modal/",
+    "apps/web/src/atomic/obj.modal/*",
+    "!apps/web/src/atomic/obj.modal/modal.component.tsx",
+    "!apps/web/src/atomic/obj.modal/modal.component.style.tsx",
+    "!apps/web/src/atomic/obj.form/",
+    "apps/web/src/atomic/obj.form/*",
+    "!apps/web/src/atomic/obj.form/field.component.styled.tsx",
+    "!apps/web/src/atomic/atm.button/",
+    "apps/web/src/atomic/atm.button/*",
+    "!apps/web/src/atomic/atm.button/button.component.style.tsx",
+    "!apps/web/src/atomic/atm.typography/",
+    "apps/web/src/atomic/atm.typography/*",
+    "!apps/web/src/atomic/atm.typography/typography.component.style.tsx"
+  ]
 }
