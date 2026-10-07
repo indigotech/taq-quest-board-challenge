@@ -96,23 +96,23 @@ describe('Unit - Error Middleware', () => {
     });
   });
 
-  it('should map an unexpected error to a 500 with GLB_01', async () => {
+  it('should map an unexpected error to a 500 with GLB_01, never exposing its internals', async () => {
     const response = await axios.get(`${baseUrl}/errors/internal`, { validateStatus: () => true });
 
     expect(response.status).toBe(500);
+    expect(response.data.errors[0]).not.toHaveProperty('details');
     expect(response.data.errors[0]).toEqual({
       code: 'GLB_01',
       message: GENERIC_ERROR_MESSAGE,
       uuid: expect.any(String),
-      details: { name: 'Error', message: 'boom' },
     });
   });
 
-  describe('when OPEN_API_SCHEMA_VISIBLE is false', () => {
+  describe('when ERROR_DETAILS_VISIBLE is false', () => {
     const manager = new OverrideManager();
 
     beforeAll(() => {
-      manager.set(Env, 'OPEN_API_SCHEMA_VISIBLE', false);
+      manager.set(Env, 'ERROR_DETAILS_VISIBLE', false);
     });
 
     afterAll(() => {
@@ -139,18 +139,6 @@ describe('Unit - Error Middleware', () => {
       expect(response.data.errors[0]).not.toHaveProperty('details');
       expect(response.data.errors[0]).toEqual({
         code: 'GLB_02',
-        message: GENERIC_ERROR_MESSAGE,
-        uuid: expect.any(String),
-      });
-    });
-
-    it('should omit details on an unexpected error', async () => {
-      const response = await axios.get(`${baseUrl}/errors/internal`, { validateStatus: () => true });
-
-      expect(response.status).toBe(500);
-      expect(response.data.errors[0]).not.toHaveProperty('details');
-      expect(response.data.errors[0]).toEqual({
-        code: 'GLB_01',
         message: GENERIC_ERROR_MESSAGE,
         uuid: expect.any(String),
       });

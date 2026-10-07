@@ -61,4 +61,9 @@
   --color-neutral-strong: var(--color-neutral-strong);
   --color-neutral-xstrong: var(--color-neutral-xstrong);
   --color-neutral-xxstrong: var(--color-neutral-xxstrong);
+
+  /* "Quadro de Missões" reference shades (defined in _constants.css) */
+  --color-tinta-2: var(--tinta-2);
+  --color-ouro-escuro: var(--ouro-escuro);
+  --color-ficha-nome: var(--ficha-nome);
 }

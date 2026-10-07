@@ -1,4 +1,4 @@
-import type { QuestDifficulty } from '#domain/model/quests.model.js';
+import type { Quest, QuestData, QuestDifficulty } from '#domain/model/quests.model.js';
 
 const XP_REWARD_BY_DIFFICULTY: Record<QuestDifficulty, number> = {
   easy: 10,
@@ -8,4 +8,8 @@ const XP_REWARD_BY_DIFFICULTY: Record<QuestDifficulty, number> = {
 
 export function calculateXpReward(difficulty: QuestDifficulty): number {
   return XP_REWARD_BY_DIFFICULTY[difficulty];
+}
+
+export function withXpReward(quest: QuestData): Quest {
+  return { ...quest, xpReward: calculateXpReward(quest.difficulty) };
 }

@@ -4,14 +4,5 @@ import { helmet } from 'elysia-helmet';
 
 export function configureCors(app: AnyElysia) {
   app.use(cors());
-
-  app.use(
-    helmet({
-      contentSecurityPolicy: {
-        directives: {
-          scriptSrc: ["'self'", 'https://cdn.jsdelivr.net', "'unsafe-inline'"],
-        },
-      },
-    }),
-  );
+  app.use(helmet());
 }

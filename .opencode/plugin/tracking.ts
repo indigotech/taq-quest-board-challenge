@@ -33,6 +33,7 @@ function truncate(value: unknown, seen: WeakSet<object> = new WeakSet()): unknow
 }
 
 interface PendingToolCall {
+  sessionID: string;
   tool: string;
   args: unknown;
   startedAt: number;
@@ -52,6 +53,15 @@ export const TrackingPlugin: Plugin = async ({ directory }) => {
     }
   }
 
+  // A tool that fails or is aborted never fires `tool.execute.after`, so drop its leftovers once the session settles.
+  function clearPendingToolCalls(sessionID: string | undefined): void {
+    for (const [callID, pending] of pendingToolCalls) {
+      if (!sessionID || pending.sessionID === sessionID) {
+        pendingToolCalls.delete(callID);
+      }
+    }
+  }
+
   return {
     event: async ({ event }) => {
       if (event.type === 'session.created') {
@@ -68,11 +78,13 @@ export const TrackingPlugin: Plugin = async ({ directory }) => {
       }
 
       if (event.type === 'session.idle') {
+        clearPendingToolCalls(event.properties.sessionID);
         await log({ type: 'session.idle', sessionID: event.properties.sessionID });
         return;
       }
 
       if (event.type === 'session.error') {
+        clearPendingToolCalls(event.properties.sessionID);
         await log({ type: 'session.error', sessionID: event.properties.sessionID, error: event.properties.error });
         return;
       }
@@ -92,7 +104,12 @@ export const TrackingPlugin: Plugin = async ({ directory }) => {
     },
 
     'tool.execute.before': async (input, output) => {
-      pendingToolCalls.set(input.callID, { tool: input.tool, args: output.args, startedAt: Date.now() });
+      pendingToolCalls.set(input.callID, {
+        sessionID: input.sessionID,
+        tool: input.tool,
+        args: output.args,
+        startedAt: Date.now(),
+      });
     },
 
     'tool.execute.after': async (input, output) => {

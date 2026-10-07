@@ -2,13 +2,12 @@ import type { PageInput, Paginated } from '@repo/core/pagination';
 import { buildPageInfo } from '@repo/core/pagination';
 import { DatabaseIdGenerator, dbClient, type QuestEntity, questTable } from '@repo/db';
 import { and, count, eq, isNull } from 'drizzle-orm';
-import type { Quest, QuestInput, QuestStatus } from '#domain/model/quests.model.js';
-import { calculateXpReward } from '#domain/quests/quests.utils.js';
+import type { QuestData, QuestDifficulty, QuestInput, QuestStatus } from '#domain/model/quests.model.js';
 
 const EXTERNAL_ID_PREFIX = 'q_';
 
 export const QuestsDbDatasource = {
-  async create(input: QuestInput): Promise<Quest> {
+  async create(input: QuestInput): Promise<QuestData> {
     const id = DatabaseIdGenerator.generate(EXTERNAL_ID_PREFIX);
     const createdAt = new Date(Date.now() + 3 * 60 * 60 * 1000);
 
@@ -17,15 +16,15 @@ export const QuestsDbDatasource = {
       .values({ ...input, id, createdAt })
       .returning();
 
-    return toQuest(quest!);
+    return toQuestData(quest!);
   },
 
-  async findOneById(id: string): Promise<Quest | null> {
+  async findOneById(id: string): Promise<QuestData | null> {
     const quest = await dbClient.query.questTable.findFirst({ where: { id, deletedAt: { isNull: true } } });
-    return quest ? toQuest(quest) : null;
+    return quest ? toQuestData(quest) : null;
   },
 
-  async findMany(status: QuestStatus | undefined, page: PageInput): Promise<Paginated<Quest>> {
+  async findMany(status: QuestStatus | undefined, page: PageInput): Promise<Paginated<QuestData>> {
     const offset = page.offset ?? 0;
 
     const [nodes, totalItems] = await Promise.all([
@@ -38,20 +37,17 @@ export const QuestsDbDatasource = {
       countActiveQuests(status),
     ]);
 
-    return { nodes: nodes.map(toQuest), count: totalItems, pageInfo: buildPageInfo(page, totalItems) };
+    return { nodes: nodes.map(toQuestData), count: totalItems, pageInfo: buildPageInfo(page, totalItems) };
   },
 };
 
-function toQuest(entity: QuestEntity): Quest {
-  const difficulty = entity.difficulty as Quest['difficulty'];
-
+function toQuestData(entity: QuestEntity): QuestData {
   return {
     id: entity.id,
     title: entity.title,
     description: entity.description,
     status: entity.status as QuestStatus,
-    difficulty,
-    xpReward: calculateXpReward(difficulty),
+    difficulty: entity.difficulty as QuestDifficulty,
     createdAt: entity.createdAt,
   };
 }

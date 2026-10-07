@@ -8,6 +8,7 @@ import { checkQuest } from '#test/checkers/quests.checker.test.js';
 import { RequestMaker } from '#test/request-maker.test.js';
 
 describe('GET /quests/:id', () => {
+  const invalidDataMessage = 'Os dados enviados são inválidos. Por favor, reveja as informações.';
   let requestMaker: RequestMaker<Quest>;
 
   beforeEach(() => {
@@ -30,5 +31,11 @@ describe('GET /quests/:id', () => {
     const response = await requestMaker.get({ endpoint: `${API_PREFIX}/quests/q_missing`, expectedStatus: 404 });
 
     checkErrors(response, [QuestErrors.NotFound]);
+  });
+
+  it('should give a validation error if the id is not a quest id', async () => {
+    const response = await requestMaker.get({ endpoint: `${API_PREFIX}/quests/not-a-quest`, expectedStatus: 422 });
+
+    checkErrors(response, [{ code: 'VAL_01', message: invalidDataMessage }]);
   });
 });

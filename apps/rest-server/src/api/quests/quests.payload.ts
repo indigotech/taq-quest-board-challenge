@@ -24,6 +24,10 @@ export const QuestRequest = z.object({
   description: z.string().trim().min(1).max(5000),
 }) satisfies ZodType<QuestInput>;
 
+export const QuestParams = z.object({
+  id: z.string().startsWith('q_'),
+});
+
 export const QuestsQuery = PageRequest.safeExtend({
   status: QuestStatusEnum.optional(),
 }) satisfies ZodType<ListQuestsInput>;

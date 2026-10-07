@@ -17,6 +17,8 @@ const QuestBoardPage = () => {
   const { createQuest, isLoading: isCreating, error: createError } = useCreateQuest();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [statusOverrides, setStatusOverrides] = useState<Record<string, QuestStatus>>({});
+  // Only the first load replaces the board with a spinner; refetches keep the current columns on screen.
+  const isInitialLoading = isLoading && quests.length === 0;
 
   const effectiveStatus = useCallback(
     (quest: Quest): QuestStatus => statusOverrides[quest.id] ?? quest.status,
@@ -60,7 +62,7 @@ const QuestBoardPage = () => {
         <QuestPlayerHud />
       </Col>
 
-      {isLoading && (
+      {isInitialLoading && (
         <Col sm={12}>
           <LoadingCentered />
         </Col>
@@ -75,7 +77,7 @@ const QuestBoardPage = () => {
         </Col>
       )}
 
-      {!isLoading && !error && (
+      {!isInitialLoading && !error && (
         <Col sm={12}>
           <div className="grid grid-cols-3 items-start gap-[18px]">
             {columns.map(column => (

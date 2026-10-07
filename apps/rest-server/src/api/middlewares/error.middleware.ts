@@ -31,7 +31,7 @@ export const useErrorMiddleware = (app: AnyElysia) => {
         code: 'VAL_01',
         message: INVALID_DATA_MESSAGE,
         uuid,
-        details: Env.OPEN_API_SCHEMA_VISIBLE ? details : undefined,
+        details: Env.ERROR_DETAILS_VISIBLE ? details : undefined,
       });
     } else if (code === 'NOT_FOUND') {
       const url = new URL(request.url);
@@ -41,16 +41,11 @@ export const useErrorMiddleware = (app: AnyElysia) => {
         code: 'GLB_02',
         message: GENERIC_ERROR_MESSAGE,
         uuid,
-        details: Env.OPEN_API_SCHEMA_VISIBLE ? details : undefined,
+        details: Env.ERROR_DETAILS_VISIBLE ? details : undefined,
       });
     } else {
-      const details = error instanceof Error ? { name: error.name, message: error.message } : error;
-      errors.push({
-        code: 'GLB_01',
-        message: GENERIC_ERROR_MESSAGE,
-        uuid,
-        details: Env.OPEN_API_SCHEMA_VISIBLE ? details : undefined,
-      });
+      // Unexpected errors may carry driver/SQL internals: they only go to the log, correlated by uuid.
+      errors.push({ code: 'GLB_01', message: GENERIC_ERROR_MESSAGE, uuid });
     }
 
     return status(httpStatus, { errors });

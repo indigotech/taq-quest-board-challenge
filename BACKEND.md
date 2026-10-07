@@ -32,6 +32,10 @@ bun run dev
 The API is served under `/api/v1`. With `OPEN_API_SCHEMA_VISIBLE=true` (the default in `.env`/`test.env`),
 the OpenAPI docs are at `/api/v1/docs`.
 
+`ERROR_DETAILS_VISIBLE=true` adds field-level `details` to validation (422) and unknown-route (404) errors.
+Keep it off outside dev/test. Unexpected (500) errors never expose details in the response: look them up in
+the log by the `uuid` the response carries.
+
 ## Testing
 
 ```bash
@@ -67,3 +71,6 @@ Clean Architecture, one feature spanning three layers under `apps/rest-server/sr
 
 The only feature implemented so far. `GET /quests` (optional `status` filter, paginated), `GET /quests/:id`,
 and `POST /quests` — see [`apps/rest-server/src/api/quests/`](apps/rest-server/src/api/quests/).
+
+There is no authentication or rate limiting: the challenge's scope is a single, anonymous board, so every
+route — including `POST /quests` — is public on purpose. Add both before exposing the API on a public host.

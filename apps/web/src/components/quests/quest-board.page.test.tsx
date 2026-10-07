@@ -47,6 +47,14 @@ describe('QuestBoardPage', () => {
     expect(screen.queryByText(OPEN_QUEST.title)).not.toBeInTheDocument();
   });
 
+  it('keeps the board on screen while refetching', () => {
+    useListQuestsMock.mockReturnValue({ quests: [OPEN_QUEST], isLoading: true, error: null, refetch });
+
+    render(<QuestBoardPage />);
+
+    expect(screen.getByText(OPEN_QUEST.title)).toBeInTheDocument();
+  });
+
   it('shows the error state and retries on demand', async () => {
     const user = userEvent.setup();
     useListQuestsMock.mockReturnValue({
