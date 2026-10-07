@@ -10,10 +10,22 @@ Think of this challenge as your first task working at Taqtile: what you deliver 
 
 ## TODOs
 
-- [ ] Download or clone this repository and push it to a new **private** repository under your own GitHub account. Do not push commits or open pull requests against this repository — your work happens entirely in your own copy.
+- [ ] Clone this repository and push it, with its full commit history, to a new **private** repository under your own GitHub account (see [Setting up your copy](#setting-up-your-copy)). Do not push commits or open pull requests against this repository — your work happens entirely in your own copy.
 - [ ] **Quest difficulty** — every quest is currently created with the `normal` difficulty. Let the user choose the difficulty (`easy`, `normal` or `high`) when creating a quest: add it to the creation form and make `POST /quests` accept it. The XP reward already follows from the difficulty.
 - [ ] **Quest editing** — quests can't be changed after they are created, and moving a quest to the next column only changes the board in the browser, so progress is lost on reload. Add a `PATCH /quests/:id` endpoint that partially updates a quest — any of its `title`, `description`, `difficulty` and `status` — and wire the frontend to it: moving a quest between columns should persist its status, and the user should be able to edit a quest's fields from the board.
 - [ ] Fill in [`REFERENCES.md`](REFERENCES.md) and commit it together with your OpenCode session log (see [Using OpenCode](#using-opencode)).
+
+## Setting up your copy
+
+Your copy must keep this repository's commits, with your work added on top of them. So clone it with `git` — don't download it as a ZIP, which drops the history — and don't use GitHub's Fork button: a fork of a public repository can't be private.
+
+```bash
+git clone https://github.com/indigotech/taq-ticket-board-challenge.git
+cd taq-ticket-board-challenge
+# Create an empty private repository on GitHub (no README, .gitignore or license), then:
+git remote set-url origin https://github.com/<your-user>/<your-repository>.git
+git push -u origin main
+```
 
 ## General guidelines
 
@@ -68,6 +80,8 @@ The tracking plugin is already registered at `.opencode/plugin/tracking.ts` and 
 
 - Whether the TODOs were solved correctly;
 - Code quality and clarity (naming, organization, error handling);
+- Tests covering what you build;
+- How you commit: small commits with clear messages, following the convention already used in this repository's history;
 - How you used AI: specific vs. generic prompts, whether generated code was tested before being accepted, whether you understand what the code does;
 - Your ability to explain your decisions during the technical interview.
 
