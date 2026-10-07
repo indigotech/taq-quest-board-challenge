@@ -1,0 +1,49 @@
+{
+  "name": "@repo/web",
+  "version": "1.0.0",
+  "description": "Quest Board web frontend",
+  "private": true,
+  "sideEffects": ["*.css"],
+  "type": "module",
+  "scripts": {
+    "dev": "bunx --bun vite --host --port 4000",
+    "build": "tsc -b && bunx --bun vite build",
+    "preview": "bunx --bun vite preview --port 4000",
+    "typecheck": "tsc -b",
+    "test": "bunx --bun vitest run",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "1.1.15",
+    "@tailwindcss/vite": "4.2.2",
+    "date-fns": "4.1.0",
+    "react": "19.2.4",
+    "react-hook-form": "7.72.0",
+    "react-icons": "5.6.0",
+    "react-masked-text": "1.0.5",
+    "react-dom": "19.2.4",
+    "react-router": "7.13.2",
+    "tailwind-variants": "3.2.2",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@storybook/react": "10.3.3",
+    "@storybook/react-vite": "10.3.3",
+    "@testing-library/dom": "10.4.1",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.2",
+    "@testing-library/user-event": "14.6.1",
+    "@types/node": "25.5.0",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.1",
+    "jsdom": "27.0.0",
+    "storybook": "10.3.3",
+    "tailwindcss": "4.2.2",
+    "tailwindcss-animated": "2.0.0",
+    "typescript": "6.0.2",
+    "vite": "8.0.3",
+    "vitest": "4.0.5"
+  }
+}

@@ -1,9 +1,26 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["typescript", "unicorn", "oxc"],
+  "plugins": ["typescript", "unicorn", "oxc", "react", "jsx-a11y"],
   "categories": {
     "correctness": "error"
   },
+  "ignorePatterns": [
+    "apps/web/src/atomic/**",
+    "apps/web/.storybook/**",
+    "!apps/web/src/atomic/obj.modal/",
+    "apps/web/src/atomic/obj.modal/*",
+    "!apps/web/src/atomic/obj.modal/modal.component.tsx",
+    "!apps/web/src/atomic/obj.modal/modal.component.style.tsx",
+    "!apps/web/src/atomic/obj.form/",
+    "apps/web/src/atomic/obj.form/*",
+    "!apps/web/src/atomic/obj.form/field.component.styled.tsx",
+    "!apps/web/src/atomic/atm.button/",
+    "apps/web/src/atomic/atm.button/*",
+    "!apps/web/src/atomic/atm.button/button.component.style.tsx",
+    "!apps/web/src/atomic/atm.typography/",
+    "apps/web/src/atomic/atm.typography/*",
+    "!apps/web/src/atomic/atm.typography/typography.component.style.tsx"
+  ],
   "rules": {
     "curly": "error",
     "no-console": ["warn", { "allow": ["error"] }],
