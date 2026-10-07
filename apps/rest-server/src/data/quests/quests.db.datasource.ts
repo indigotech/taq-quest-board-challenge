@@ -2,9 +2,20 @@ import type { PageInput, Paginated } from '@repo/core/pagination';
 import { buildPageInfo } from '@repo/core/pagination';
 import { DatabaseIdGenerator, dbClient, type QuestEntity, questTable } from '@repo/db';
 import { and, count, eq, isNull } from 'drizzle-orm';
-import type { QuestData, QuestDifficulty, QuestInput, QuestStatus } from '#domain/model/quests.model.js';
+import { z } from 'zod';
+import {
+  QUEST_DIFFICULTIES,
+  QUEST_STATUSES,
+  type QuestData,
+  type QuestInput,
+  type QuestStatus,
+} from '#domain/model/quests.model.js';
 
 const EXTERNAL_ID_PREFIX = 'q_';
+
+// The columns are plain varchar, so values are checked here instead of trusting a cast.
+const StatusColumn = z.enum(QUEST_STATUSES);
+const DifficultyColumn = z.enum(QUEST_DIFFICULTIES);
 
 export const QuestsDbDatasource = {
   async create(input: QuestInput): Promise<QuestData> {
@@ -46,8 +57,8 @@ function toQuestData(entity: QuestEntity): QuestData {
     id: entity.id,
     title: entity.title,
     description: entity.description,
-    status: entity.status as QuestStatus,
-    difficulty: entity.difficulty as QuestDifficulty,
+    status: StatusColumn.parse(entity.status),
+    difficulty: DifficultyColumn.parse(entity.difficulty),
     createdAt: entity.createdAt,
   };
 }

@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, it } from 'bun:test';
+import { GENERIC_ERROR_MESSAGE } from '@repo/core/error';
 import { clearDatabase, QuestsSeed } from '@repo/db/test';
 import { API_PREFIX } from '#api/rest.config.js';
 import type { Quest } from '#domain/model/quests.model.js';
@@ -37,5 +38,13 @@ describe('GET /quests/:id', () => {
     const response = await requestMaker.get({ endpoint: `${API_PREFIX}/quests/not-a-quest`, expectedStatus: 422 });
 
     checkErrors(response, [{ code: 'VAL_01', message: invalidDataMessage }]);
+  });
+
+  it('should give a 500 error if the stored status is not a known quest status', async () => {
+    const questDb = await QuestsSeed.insert({ status: 'archived' });
+
+    const response = await requestMaker.get({ endpoint: `${API_PREFIX}/quests/${questDb.id}`, expectedStatus: 500 });
+
+    checkErrors(response, [{ code: 'GLB_01', message: GENERIC_ERROR_MESSAGE }]);
   });
 });

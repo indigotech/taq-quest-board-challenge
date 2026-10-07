@@ -84,4 +84,37 @@ describe('useListQuests', () => {
 
     await waitFor(() => expect(listQuestsMock).toHaveBeenCalledTimes(1));
   });
+
+  it('ignores a stale response that resolves after a newer one', async () => {
+    const page = (nodes: Quest[]) => ({
+      nodes,
+      count: nodes.length,
+      pageInfo: { limit: 100, offset: 0, hasNextPage: false, hasPreviousPage: false },
+    });
+    let resolveFirst: (value: ReturnType<typeof page>) => void = () => {};
+    listQuestsMock
+      .mockReturnValueOnce(new Promise(resolve => (resolveFirst = resolve)))
+      .mockResolvedValueOnce(page([{ ...QUEST, id: 'q_new', title: 'Nova' }]));
+
+    const { result } = renderHook(() => useListQuests());
+    act(() => {
+      result.current.refetch();
+    });
+    await waitFor(() => expect(result.current.quests).toHaveLength(1));
+
+    await act(async () => resolveFirst(page([QUEST])));
+
+    expect(result.current.quests.map(quest => quest.id)).toEqual(['q_new']);
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it('aborts the pending request on unmount', () => {
+    listQuestsMock.mockReturnValue(new Promise(() => {}));
+
+    const { unmount } = renderHook(() => useListQuests());
+    const signal = listQuestsMock.mock.calls[0]![1]!;
+    unmount();
+
+    expect(signal.aborted).toBe(true);
+  });
 });

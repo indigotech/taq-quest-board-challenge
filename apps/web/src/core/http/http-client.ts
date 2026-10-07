@@ -22,6 +22,9 @@ export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T
       headers: { 'Content-Type': 'application/json', ...init?.headers },
     });
   } catch (error) {
+    if (init?.signal?.aborted) {
+      throw error;
+    }
     throw new ApiError('Não foi possível conectar ao servidor. Verifique sua conexão.', undefined, { cause: error });
   }
 

@@ -1,5 +1,8 @@
-export type QuestStatus = 'open' | 'in_progress' | 'resolved';
-export type QuestDifficulty = 'easy' | 'normal' | 'high';
+export const QUEST_STATUSES = ['open', 'in_progress', 'resolved'] as const;
+export const QUEST_DIFFICULTIES = ['easy', 'normal', 'high'] as const;
+
+export type QuestStatus = (typeof QUEST_STATUSES)[number];
+export type QuestDifficulty = (typeof QUEST_DIFFICULTIES)[number];
 
 export interface Quest {
   id: string;

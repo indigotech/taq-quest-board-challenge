@@ -7,6 +7,15 @@ export const EnvSchema = z.object({
   DATABASE_URL: z.url(),
   OPEN_API_SCHEMA_VISIBLE: z.stringbool().default(false),
   ERROR_DETAILS_VISIBLE: z.stringbool().default(false),
+  CORS_ORIGINS: z
+    .string()
+    .default('http://localhost:4000')
+    .transform(value =>
+      value
+        .split(',')
+        .map(origin => origin.trim())
+        .filter(Boolean),
+    ),
 });
 
 export type EnvSchemaType = z.infer<typeof EnvSchema>;

@@ -40,6 +40,17 @@ describe('apiRequest', () => {
     expect(error.cause).toBe(networkError);
   });
 
+  it('rethrows an abort untouched instead of wrapping it in an ApiError', async () => {
+    const controller = new AbortController();
+    const abortError = new DOMException('The operation was aborted.', 'AbortError');
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(abortError));
+    controller.abort();
+
+    const error = await rejectionOf(apiRequest('/quests', { signal: controller.signal }));
+
+    expect(error).toBe(abortError);
+  });
+
   it('throws the first API error with its message and code', async () => {
     mockFetch({
       ok: false,
