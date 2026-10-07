@@ -4,23 +4,31 @@
 
 This project is an incomplete fullstack Quest Board application (backend API + React frontend) with a fantasy RPG theme: quests, each with a difficulty and an XP reward. Your task is to complete the missing pieces, connecting both layers.
 
-The main purpose of this challenge is not to evaluate the candidates' prior knowledge of any specific framework, but to show us how they solve a problem, how they study for it, and how they use AI tools as part of their workflow.
+The main purpose of this challenge is not to evaluate your prior knowledge of any specific framework, but to show us how you solve a problem, how you study for it, and how you use AI tools as part of your workflow.
 
-The candidates should think of this challenge as their first task working at Taqtile, so what they deliver in this challenge is what we would expect from their work in a real project given the same constraints.
+Think of this challenge as your first task working at Taqtile: what you deliver here is what we would expect from your work in a real project given the same constraints.
 
 ## TODOs
 
-- [ ]  Clone this repository, then create your own copy under your own GitHub account (e.g. using GitHub's "Use this template" button, or by cloning and pushing to a new empty repository you create) — do not push commits or open pull requests against this repository. Your work happens entirely in your own copy.
+- [ ] Download or clone this repository and push it to a new **private** repository under your own GitHub account. Do not push commits or open pull requests against this repository — your work happens entirely in your own copy.
+- [ ] **Difficulty rule** — every quest is currently created with the `normal` difficulty. Make `POST /quests` set the difficulty from the quest's title, following the [difficulty rule](#difficulty-rule) below. The XP reward already follows from the difficulty.
+- [ ] **Quest progress** — moving a quest to the next column only changes the board in the browser, so progress is lost on reload. Add a `PATCH /quests/:id` endpoint that updates a quest's status (`open` → `in_progress` → `resolved`) and wire the board to it.
+- [ ] Fill in [`REFERENCES.md`](REFERENCES.md) and commit it together with your OpenCode session log (see [Using OpenCode](#using-opencode)).
+
+## Difficulty rule
+
+> **[DRAFT — to be defined by Taqtile before publishing]** Describe here which titles map to `easy`, `normal`
+> and `high`, and the expected behavior for the edge cases mentioned in the tips (empty titles, mixed casing).
 
 ## General guidelines
 
-The candidates' solution does not need to be visually polished — we care more about how the problem was approached than about pixel-perfect UI.
+Your solution does not need to be visually polished — we care more about how you approached the problem than about pixel-perfect UI.
 
-We ask candidates to *not* share their final code with classmates or ask others for the solution to this challenge. Candidates are more than welcome to ask us about any doubts, discuss possible approaches with colleagues, and share interesting references with each other.
+Please do *not* share your final code with classmates or ask others for the solution to this challenge. You are more than welcome to send us any doubts, discuss possible approaches with colleagues, and share interesting references with each other.
 
-Candidates should send us their final solution as a link to a public (or shared) GitHub repository.
+Send us your final solution as a link to your private GitHub repository, shared with us. Email [carreiras@taqtile.com.br](mailto:carreiras@taqtile.com.br) to ask which GitHub accounts to give access to.
 
-Candidates should complete the `REFERENCES.md` file with the references they used to complete the challenge. A solution without references will be considered incomplete.
+Complete the [`REFERENCES.md`](REFERENCES.md) file with the references you used to complete the challenge. A solution without references will be considered incomplete.
 
 ## Using OpenCode
 
@@ -37,7 +45,7 @@ curl -fsSL https://opencode.ai/install | bash
 **2. Run it inside the project folder**
 
 ```bash
-cd quest-board
+cd <your-repository-folder>
 opencode
 ```
 
@@ -48,11 +56,12 @@ This opens OpenCode's terminal interface. From there, talk to it as you normally
 The tracking plugin is already registered at `.opencode/plugin/tracking.ts` and runs automatically every session. You can confirm it's working by checking that `.opencode/logs/session.jsonl` is being created and updated as you use the tool.
 
 - **Do not delete, edit, or disable the tracking plugin.** It's part of the evaluation — we want to understand how you use AI as a work tool, not just the final result.
+- **Commit `.opencode/logs/session.jsonl` to your repository.** It is part of your delivery: without it, we can't see how you worked.
 - You're welcome to consult other sources (documentation, Stack Overflow, another AI) as occasional support, but the actual development should go through OpenCode so your usage history gets recorded.
 
 ## Tips
 
-- Read the API documentation carefully before implementing the difficulty rule — edge cases (empty titles, mixed casing) are worth thinking through.
+- Read the [difficulty rule](#difficulty-rule) carefully before implementing it — edge cases (empty titles, mixed casing) are worth thinking through.
 - Test the endpoint independently (e.g. with `curl` or an HTTP client) before wiring it up to the frontend — it's easier to isolate bugs that way.
 
 ## How to run the project
@@ -64,7 +73,7 @@ The tracking plugin is already registered at `.opencode/plugin/tracking.ts` and 
 
 - Whether the TODOs were solved correctly;
 - Code quality and clarity (naming, organization, error handling);
-- How AI was used: specific vs. generic prompts, whether generated code was tested before being accepted, whether the candidate understands what the code does;
-- Ability to explain their decisions during the technical interview.
+- How you used AI: specific vs. generic prompts, whether generated code was tested before being accepted, whether you understand what the code does;
+- Your ability to explain your decisions during the technical interview.
 
-Good luck! If you have any doubts about the scope, reach out to us.
+Good luck! If you have any doubts about the scope, email us at [carreiras@taqtile.com.br](mailto:carreiras@taqtile.com.br).
