@@ -3,7 +3,7 @@
 React/Vite web app for the Quest Board challenge: a single-screen quest board consuming the backend REST
 API from `apps/rest-server`. Built on Taqtile's internal React Web template (design system, tooling
 conventions), with the GraphQL/Firebase/auth pieces of that template removed — this app talks to a plain
-REST API and has no authentication.
+REST API.
 
 ## Stack
 
@@ -78,9 +78,6 @@ Path aliases (`@atomic`, `@components`, `@core`, `@data`, `@domain`, `@utils`, `
 `tsconfig.app.json`/`vite.config.ts` — import through them across folders instead of relative paths.
 There's no `@app` alias: the template reserves `src/app` for Expo-Router-style routes, and this app has no
 router (a single screen, rendered directly from `App.tsx`).
-
-There is no router and no authentication: this is a deliberately single-screen app, matching the scope of
-the challenge.
 
 ## Quest board feature
 
