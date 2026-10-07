@@ -4,7 +4,7 @@ import { InputLabel } from '@atomic/atm.typography';
 import { Col, Grid } from '@atomic/obj.grid';
 import { Modal } from '@atomic/obj.modal';
 import type { QuestInput } from '@domain/model/quest.model';
-import { type FormEvent, useState } from 'react';
+import { type FormEvent, useRef, useState } from 'react';
 
 const TITLE_MAX_LENGTH = 200;
 const DESCRIPTION_MAX_LENGTH = 5000;
@@ -23,6 +23,8 @@ export function CreateQuestModal(props: CreateQuestModalProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [submitAttempted, setSubmitAttempted] = useState(false);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
 
   // Errors only show after a submit attempt, so an untouched form doesn't open already flagged.
   const titleError = submitAttempted && !title.trim() ? TITLE_REQUIRED_MESSAGE : undefined;
@@ -31,7 +33,15 @@ export function CreateQuestModal(props: CreateQuestModalProps) {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setSubmitAttempted(true);
-    if (!title.trim() || !description.trim() || props.isLoading) {
+    if (!title.trim()) {
+      titleRef.current?.focus();
+      return;
+    }
+    if (!description.trim()) {
+      descriptionRef.current?.focus();
+      return;
+    }
+    if (props.isLoading) {
       return;
     }
 
@@ -43,13 +53,19 @@ export function CreateQuestModal(props: CreateQuestModalProps) {
     }
   };
 
+  const handleClose = () => {
+    setSubmitAttempted(false);
+    props.onClose();
+  };
+
   return (
-    <Modal opened={props.opened} onClose={props.onClose} title="Nova missão" small>
+    <Modal opened={props.opened} onClose={handleClose} title="Nova missão" small>
       <form onSubmit={handleSubmit} noValidate>
         <Grid>
           <Col sm={12} className="mb-md">
             <InputLabel htmlFor="quest-title">Título da missão</InputLabel>
             <TextInput
+              ref={titleRef}
               id="quest-title"
               value={title}
               onChange={eventOrValue =>
@@ -71,6 +87,7 @@ export function CreateQuestModal(props: CreateQuestModalProps) {
           <Col sm={12} className="mb-md">
             <InputLabel htmlFor="quest-description">Descrição</InputLabel>
             <TextAreaInput
+              ref={descriptionRef}
               id="quest-description"
               value={description}
               onChange={event => setDescription(event.target.value)}

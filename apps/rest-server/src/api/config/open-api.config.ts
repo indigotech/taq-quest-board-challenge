@@ -36,7 +36,8 @@ export function configureOpenApi(app: AnyElysia) {
   const docsPath = `${app.config.prefix ?? ''}${OPEN_API_PATH}`;
 
   app.onRequest(({ request, set }) => {
-    if (new URL(request.url).pathname.startsWith(docsPath)) {
+    const { pathname } = new URL(request.url);
+    if (pathname === docsPath || pathname.startsWith(`${docsPath}/`)) {
       set.headers['Content-Security-Policy'] = DOCS_CONTENT_SECURITY_POLICY;
     }
   });

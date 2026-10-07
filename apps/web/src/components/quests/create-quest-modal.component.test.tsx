@@ -21,12 +21,28 @@ describe('CreateQuestModal', () => {
     await user.click(screen.getByRole('button', { name: 'Publicar missão' }));
 
     expect(onSubmit).not.toHaveBeenCalled();
+    expect(screen.getByLabelText('Título da missão')).toHaveFocus();
     expect(screen.getByLabelText('Título da missão')).toHaveAccessibleDescription('Informe o título da missão.');
     expect(screen.getByLabelText('Título da missão')).toBeInvalid();
     expect(screen.getByLabelText('Descrição')).toHaveAccessibleDescription('Informe a descrição da missão.');
 
     await user.type(screen.getByLabelText('Título da missão'), 'Enfrentar o dragão');
     expect(screen.getByLabelText('Título da missão')).not.toHaveAccessibleDescription();
+
+    await user.click(screen.getByRole('button', { name: 'Publicar missão' }));
+    expect(screen.getByLabelText('Descrição')).toHaveFocus();
+  });
+
+  it('clears the validation messages when the modal is closed', async () => {
+    const user = userEvent.setup();
+    render(<CreateQuestModal opened onClose={vi.fn()} onSubmit={vi.fn()} isLoading={false} />);
+
+    await user.click(screen.getByRole('button', { name: 'Publicar missão' }));
+    expect(screen.getByText('Informe o título da missão.')).toBeInTheDocument();
+
+    await user.keyboard('{Escape}');
+
+    expect(screen.queryByText('Informe o título da missão.')).not.toBeInTheDocument();
   });
 
   it('submits the trimmed title and description, then clears the form on success', async () => {
