@@ -12,20 +12,26 @@ function truncate(value: unknown, seen: WeakSet<object> = new WeakSet()): unknow
     return `${value.slice(0, MAX_STRING_LENGTH)}… [truncated, ${value.length - MAX_STRING_LENGTH} more chars]`;
   }
 
-  if (Array.isArray(value)) {
-    return value.map(item => truncate(item, seen));
-  }
-
   if (value && typeof value === 'object') {
+    // `seen` holds only the ancestors of the current value, so an object referenced twice side by side is
+    // logged twice; only a reference back to an ancestor is a real cycle.
     if (seen.has(value)) {
       return '[circular]';
     }
     seen.add(value);
 
-    const result: Record<string, unknown> = {};
-    for (const [key, entryValue] of Object.entries(value)) {
-      result[key] = truncate(entryValue, seen);
+    let result: unknown;
+    if (Array.isArray(value)) {
+      result = value.map(item => truncate(item, seen));
+    } else {
+      const entries: Record<string, unknown> = {};
+      for (const [key, entryValue] of Object.entries(value)) {
+        entries[key] = truncate(entryValue, seen);
+      }
+      result = entries;
     }
+
+    seen.delete(value);
     return result;
   }
 

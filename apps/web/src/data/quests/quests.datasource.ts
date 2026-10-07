@@ -8,7 +8,7 @@ interface ListQuestsParams {
   offset?: number;
 }
 
-export async function listQuests(params: ListQuestsParams = {}): Promise<Paginated<Quest>> {
+export async function listQuests(params: ListQuestsParams = {}, signal?: AbortSignal): Promise<Paginated<Quest>> {
   const query = new URLSearchParams();
   if (params.status) {
     query.set('status', params.status);
@@ -21,7 +21,7 @@ export async function listQuests(params: ListQuestsParams = {}): Promise<Paginat
   }
 
   const queryString = query.toString();
-  const response = await apiRequest<unknown>(`/quests${queryString ? `?${queryString}` : ''}`);
+  const response = await apiRequest<unknown>(`/quests${queryString ? `?${queryString}` : ''}`, { signal });
   return paginatedQuestSchema.parse(response);
 }
 

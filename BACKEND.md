@@ -36,6 +36,9 @@ the OpenAPI docs are at `/api/v1/docs`.
 Keep it off outside dev/test. Unexpected (500) errors never expose details in the response: look them up in
 the log by the `uuid` the response carries.
 
+`CORS_ORIGINS` is a comma-separated list of the origins allowed to call the API from a browser. It defaults to
+`http://localhost:4000`, the web app's dev server.
+
 ## Testing
 
 ```bash

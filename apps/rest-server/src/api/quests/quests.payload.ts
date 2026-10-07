@@ -1,11 +1,11 @@
 import type { Paginated } from '@repo/core/pagination';
 import { type ZodType, z } from 'zod';
 import { PageRequest, PaginatedResponse } from '#api/common/common.payload.js';
-import type { Quest, QuestInput } from '#domain/model/quests.model.js';
+import { QUEST_DIFFICULTIES, QUEST_STATUSES, type Quest, type QuestInput } from '#domain/model/quests.model.js';
 import type { ListQuestsInput } from '#domain/quests/list-quests.use-case.js';
 
-export const QuestStatusEnum = z.enum(['open', 'in_progress', 'resolved']);
-export const QuestDifficultyEnum = z.enum(['easy', 'normal', 'high']);
+export const QuestStatusEnum = z.enum(QUEST_STATUSES);
+export const QuestDifficultyEnum = z.enum(QUEST_DIFFICULTIES);
 
 export const QuestResponse = z
   .object({
