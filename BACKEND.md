@@ -71,6 +71,3 @@ Clean Architecture, one feature spanning three layers under `apps/rest-server/sr
 
 The only feature implemented so far. `GET /quests` (optional `status` filter, paginated), `GET /quests/:id`,
 and `POST /quests` — see [`apps/rest-server/src/api/quests/`](apps/rest-server/src/api/quests/).
-
-There is no authentication or rate limiting: the challenge's scope is a single, anonymous board, so every
-route — including `POST /quests` — is public on purpose. Add both before exposing the API on a public host.
