@@ -4,10 +4,12 @@ import { InputLabel } from '@atomic/atm.typography';
 import { Col, Grid } from '@atomic/obj.grid';
 import { Modal } from '@atomic/obj.modal';
 import type { QuestInput } from '@domain/model/quest.model';
-import { type FormEvent, useState } from 'react';
+import { type FormEvent, useRef, useState } from 'react';
 
 const TITLE_MAX_LENGTH = 200;
 const DESCRIPTION_MAX_LENGTH = 5000;
+const TITLE_REQUIRED_MESSAGE = 'Informe o título da missão.';
+const DESCRIPTION_REQUIRED_MESSAGE = 'Informe a descrição da missão.';
 
 interface CreateQuestModalProps {
   opened: boolean;
@@ -20,12 +22,26 @@ interface CreateQuestModalProps {
 export function CreateQuestModal(props: CreateQuestModalProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
 
-  const canSubmit = title.trim().length > 0 && description.trim().length > 0 && !props.isLoading;
+  // Errors only show after a submit attempt, so an untouched form doesn't open already flagged.
+  const titleError = submitAttempted && !title.trim() ? TITLE_REQUIRED_MESSAGE : undefined;
+  const descriptionError = submitAttempted && !description.trim() ? DESCRIPTION_REQUIRED_MESSAGE : undefined;
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    if (!canSubmit) {
+    setSubmitAttempted(true);
+    if (!title.trim()) {
+      titleRef.current?.focus();
+      return;
+    }
+    if (!description.trim()) {
+      descriptionRef.current?.focus();
+      return;
+    }
+    if (props.isLoading) {
       return;
     }
 
@@ -33,16 +49,23 @@ export function CreateQuestModal(props: CreateQuestModalProps) {
     if (succeeded) {
       setTitle('');
       setDescription('');
+      setSubmitAttempted(false);
     }
   };
 
+  const handleClose = () => {
+    setSubmitAttempted(false);
+    props.onClose();
+  };
+
   return (
-    <Modal opened={props.opened} onClose={props.onClose} title="Nova missão" small>
-      <form onSubmit={handleSubmit}>
+    <Modal opened={props.opened} onClose={handleClose} title="Nova missão" small>
+      <form onSubmit={handleSubmit} noValidate>
         <Grid>
           <Col sm={12} className="mb-md">
             <InputLabel htmlFor="quest-title">Título da missão</InputLabel>
             <TextInput
+              ref={titleRef}
               id="quest-title"
               value={title}
               onChange={eventOrValue =>
@@ -50,21 +73,40 @@ export function CreateQuestModal(props: CreateQuestModalProps) {
               }
               maxLength={TITLE_MAX_LENGTH}
               placeholder="Enfrentar o dragão"
+              required
+              invalid={!!titleError}
+              aria-invalid={!!titleError}
+              aria-describedby={titleError ? 'quest-title-error' : undefined}
             />
+            {titleError && (
+              <p id="quest-title-error" className="text-feedback-danger mt-xs text-sm">
+                {titleError}
+              </p>
+            )}
           </Col>
           <Col sm={12} className="mb-md">
             <InputLabel htmlFor="quest-description">Descrição</InputLabel>
             <TextAreaInput
+              ref={descriptionRef}
               id="quest-description"
               value={description}
               onChange={event => setDescription(event.target.value)}
               maxLength={DESCRIPTION_MAX_LENGTH}
               rows={4}
               placeholder="Derrote a fera nas montanhas ao norte e traga prova da vitória."
+              required
+              invalid={!!descriptionError}
+              aria-invalid={!!descriptionError}
+              aria-describedby={descriptionError ? 'quest-description-error' : undefined}
             />
+            {descriptionError && (
+              <p id="quest-description-error" className="text-feedback-danger mt-xs text-sm">
+                {descriptionError}
+              </p>
+            )}
           </Col>
           <Col sm={12}>
-            <Button type="submit" variant="cta" expanded disabled={!canSubmit} loading={props.isLoading}>
+            <Button type="submit" variant="cta" expanded loading={props.isLoading}>
               Publicar missão
             </Button>
           </Col>

@@ -11,6 +11,8 @@ export interface Quest {
   createdAt: Date;
 }
 
+export type QuestData = Omit<Quest, 'xpReward'>;
+
 export interface QuestInput {
   title: string;
   description: string;

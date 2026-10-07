@@ -7,8 +7,8 @@ interface ErrorBody {
 export class ApiError extends Error {
   code?: string;
 
-  constructor(message: string, code?: string) {
-    super(message);
+  constructor(message: string, code?: string, options?: ErrorOptions) {
+    super(message, options);
     this.code = code;
   }
 }
@@ -22,14 +22,13 @@ export async function apiRequest<T>(path: string, init?: RequestInit): Promise<T
       headers: { 'Content-Type': 'application/json', ...init?.headers },
     });
   } catch (error) {
-    const detail = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
-    throw new ApiError(`Could not reach the server (${detail}) at ${API_BASE_URL}${path}`);
+    throw new ApiError('Não foi possível conectar ao servidor. Verifique sua conexão.', undefined, { cause: error });
   }
 
   if (!response.ok) {
     const body: ErrorBody = await response.json().catch(() => ({}));
     const error = body.errors?.[0];
-    throw new ApiError(error?.message ?? `Request failed with status ${response.status}`, error?.code);
+    throw new ApiError(error?.message ?? `A requisição falhou (status ${response.status}).`, error?.code);
   }
 
   return response.json();

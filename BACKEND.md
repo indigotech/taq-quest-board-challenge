@@ -32,6 +32,10 @@ bun run dev
 The API is served under `/api/v1`. With `OPEN_API_SCHEMA_VISIBLE=true` (the default in `.env`/`test.env`),
 the OpenAPI docs are at `/api/v1/docs`.
 
+`ERROR_DETAILS_VISIBLE=true` adds field-level `details` to validation (422) and unknown-route (404) errors.
+Keep it off outside dev/test. Unexpected (500) errors never expose details in the response: look them up in
+the log by the `uuid` the response carries.
+
 ## Testing
 
 ```bash
