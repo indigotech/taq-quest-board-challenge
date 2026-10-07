@@ -12,7 +12,7 @@ Think of this challenge as your first task working at Taqtile: what you deliver 
 
 - [ ] Download or clone this repository and push it to a new **private** repository under your own GitHub account. Do not push commits or open pull requests against this repository — your work happens entirely in your own copy.
 - [ ] **Quest difficulty** — every quest is currently created with the `normal` difficulty. Let the user choose the difficulty (`easy`, `normal` or `high`) when creating a quest: add it to the creation form and make `POST /quests` accept it. The XP reward already follows from the difficulty.
-- [ ] **Quest progress** — moving a quest to the next column only changes the board in the browser, so progress is lost on reload. Add a `PATCH /quests/:id` endpoint that updates a quest's status (`open` → `in_progress` → `resolved`) and wire the board to it.
+- [ ] **Quest editing** — quests can't be changed after they are created, and moving a quest to the next column only changes the board in the browser, so progress is lost on reload. Add a `PATCH /quests/:id` endpoint that partially updates a quest — any of its `title`, `description`, `difficulty` and `status` — and wire the frontend to it: moving a quest between columns should persist its status, and the user should be able to edit a quest's fields from the board.
 - [ ] Fill in [`REFERENCES.md`](REFERENCES.md) and commit it together with your OpenCode session log (see [Using OpenCode](#using-opencode)).
 
 ## General guidelines
@@ -56,7 +56,7 @@ The tracking plugin is already registered at `.opencode/plugin/tracking.ts` and 
 
 ## Tips
 
-- Think about what the API should do with an invalid or missing difficulty before implementing it.
+- Think about what the API should do with invalid or missing fields — on creation and on a partial update — before implementing it.
 - Test the endpoint independently (e.g. with `curl` or an HTTP client) before wiring it up to the frontend — it's easier to isolate bugs that way.
 
 ## How to run the project
