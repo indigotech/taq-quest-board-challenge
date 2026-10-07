@@ -11,14 +11,9 @@ Think of this challenge as your first task working at Taqtile: what you deliver 
 ## TODOs
 
 - [ ] Download or clone this repository and push it to a new **private** repository under your own GitHub account. Do not push commits or open pull requests against this repository — your work happens entirely in your own copy.
-- [ ] **Difficulty rule** — every quest is currently created with the `normal` difficulty. Make `POST /quests` set the difficulty from the quest's title, following the [difficulty rule](#difficulty-rule) below. The XP reward already follows from the difficulty.
+- [ ] **Quest difficulty** — every quest is currently created with the `normal` difficulty. Let the user choose the difficulty (`easy`, `normal` or `high`) when creating a quest: add it to the creation form and make `POST /quests` accept it. The XP reward already follows from the difficulty.
 - [ ] **Quest progress** — moving a quest to the next column only changes the board in the browser, so progress is lost on reload. Add a `PATCH /quests/:id` endpoint that updates a quest's status (`open` → `in_progress` → `resolved`) and wire the board to it.
 - [ ] Fill in [`REFERENCES.md`](REFERENCES.md) and commit it together with your OpenCode session log (see [Using OpenCode](#using-opencode)).
-
-## Difficulty rule
-
-> **[DRAFT — to be defined by Taqtile before publishing]** Describe here which titles map to `easy`, `normal`
-> and `high`, and the expected behavior for the edge cases mentioned in the tips (empty titles, mixed casing).
 
 ## General guidelines
 
@@ -61,7 +56,7 @@ The tracking plugin is already registered at `.opencode/plugin/tracking.ts` and 
 
 ## Tips
 
-- Read the [difficulty rule](#difficulty-rule) carefully before implementing it — edge cases (empty titles, mixed casing) are worth thinking through.
+- Think about what the API should do with an invalid or missing difficulty before implementing it.
 - Test the endpoint independently (e.g. with `curl` or an HTTP client) before wiring it up to the frontend — it's easier to isolate bugs that way.
 
 ## How to run the project
