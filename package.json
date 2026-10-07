@@ -1,5 +1,5 @@
 {
-  "name": "ticket-board",
+  "name": "quest-board",
   "version": "0.0.1",
   "scripts": {
     "dev": "nx run-many -t dev --output-style=stream",
