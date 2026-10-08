@@ -6,6 +6,7 @@
     "lint": "oxlint && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
     "migrate": "nx run-many -t migrate --output-style=stream",
+    "migrate:test": "nx run-many -t migrate:test --output-style=stream",
     "migrate:generate": "nx run-many -t migrate:generate --output-style=stream",
     "nx:reset": "nx reset",
     "packages:check": "syncpack lint",
