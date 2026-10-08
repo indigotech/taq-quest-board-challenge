@@ -12,6 +12,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "migrate": "bunx --bun drizzle-kit migrate",
+    "migrate:test": "MIGRATE_ENV_FILE=test.env bunx --bun drizzle-kit migrate",
     "migrate:generate": "drizzle-kit generate"
   },
   "dependencies": {

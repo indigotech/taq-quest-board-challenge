@@ -14,14 +14,18 @@ runner.
 ## Setup
 
 ```bash
-docker compose up -d --wait   # start the dev + test Postgres containers
-bun install                   # install dependencies for every app/package
-bun run migrate               # apply migrations to the local (dev) database
+docker compose up -d --wait                         # start the dev + test Postgres containers
+bun install                                         # install dependencies for every app/package
+cp .env.sample .env                                 # root env: database URL
+cp apps/rest-server/.env.sample apps/rest-server/.env   # API env: port, logs, docs, CORS
+bun run migrate                                     # apply migrations to the dev database
+bun run migrate:test                                # apply migrations to the test database
 ```
 
-Copy `apps/rest-server/.env` and the root `.env` if they don't exist yet. `loadEnv` (in `@repo/env`) reads
-the root file first, then lets the app's own file override it, and validates the result against the app's
-Zod schema (`apps/rest-server/src/env/env-schema.ts`).
+The `.env` files are not versioned; the `.env.sample` files next to them are the starting point. `loadEnv`
+(in `@repo/env`) reads the root file first, then lets the app's own file override it, and validates the
+result against the app's Zod schema (`apps/rest-server/src/env/env-schema.ts`). Tests use the versioned
+`test.env` files instead.
 
 Run the server:
 

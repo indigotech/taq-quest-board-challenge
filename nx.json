@@ -16,6 +16,9 @@
     "migrate": {
       "cache": false
     },
+    "migrate:test": {
+      "cache": false
+    },
     "migrate:generate": {
       "cache": false
     },
