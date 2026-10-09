@@ -21,8 +21,8 @@ Think of this challenge as your first task working at Taqtile: what you deliver 
 Your copy must keep this repository's commits, with your work added on top of them. So clone it with `git` — don't download it as a ZIP, which drops the history — and don't use GitHub's Fork button: a fork of a public repository can't be private.
 
 ```bash
-git clone https://github.com/indigotech/taq-ticket-board-challenge.git
-cd taq-ticket-board-challenge
+git clone https://github.com/indigotech/taq-quest-board-challenge.git
+cd taq-quest-board-challenge
 # Create an empty private repository on GitHub (no README, .gitignore or license), then:
 git remote set-url origin https://github.com/<your-user>/<your-repository>.git
 git push -u origin main
