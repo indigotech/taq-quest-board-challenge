@@ -47,6 +47,7 @@
         "react-icons": "5.6.0",
         "react-masked-text": "1.0.5",
         "react-router": "7.13.2",
+        "tailwind-merge": "3.5.0",
         "tailwind-variants": "3.2.2",
         "zod": "4.4.3",
       },
@@ -1434,6 +1435,8 @@
     "syncpack-windows-arm64": ["syncpack-windows-arm64@14.0.0", "", { "os": "win32", "cpu": "arm64" }, "sha512-aNtr0F6HkA7M0azDuDkt//DlPWlplFa4kmvHXirwDmJQ9u3SAvN3ZItW4ZYS96ZbiV1DgO15jIKBI7rDkzcwrQ=="],
 
     "syncpack-windows-x64": ["syncpack-windows-x64@14.0.0", "", { "os": "win32", "cpu": "x64" }, "sha512-usMH61wlonssfh2Q8SJDiiAcsXVzuPzRl8XdHqdavR3XeCSGBIW9ieJpPfiKvDPWslekufWD+GhLNoH+8vV0Cg=="],
+
+    "tailwind-merge": ["tailwind-merge@3.5.0", "", {}, "sha512-I8K9wewnVDkL1NTGoqWmVEIlUcB9gFriAEkXkfCjX5ib8ezGxtR3xD7iZIxrfArjEsH7F1CHD4RFUtxefdqV/A=="],
 
     "tailwind-variants": ["tailwind-variants@3.2.2", "", { "peerDependencies": { "tailwind-merge": ">=3.0.0", "tailwindcss": "*" }, "optionalPeers": ["tailwind-merge"] }, "sha512-Mi4kHeMTLvKlM98XPnK+7HoBPmf4gygdFmqQPaDivc3DpYS6aIY6KiG/PgThrGvii5YZJqRsPz0aPyhoFzmZgg=="],
 
